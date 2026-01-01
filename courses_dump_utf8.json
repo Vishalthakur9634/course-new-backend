@@ -1,0 +1,27 @@
+[
+  {
+    "_id": "6947bd9591010bca6632b7a2",
+    "title": "Mastering React & Modern Web Development",
+    "price": 99.99
+  },
+  {
+    "_id": "6947bd9591010bca6632b7b4",
+    "title": "Business Strategy 2024: A Modern Approach",
+    "price": 79.99
+  },
+  {
+    "_id": "6947bd9691010bca6632b7c6",
+    "title": "Complete UI/UX Design Masterclass",
+    "price": 129.99
+  },
+  {
+    "_id": "6947bd9791010bca6632b7d8",
+    "title": "Social Media Marketing 2.0",
+    "price": 59.99
+  },
+  {
+    "_id": "69563d96394663939a579470",
+    "title": "Bhrhmashtra",
+    "price": 7
+  }
+]

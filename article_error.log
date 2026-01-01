@@ -1,0 +1,15 @@
+[2025-12-31T17:20:34.853Z] {
+  "message": "next is not a function",
+  "stack": "TypeError: next is not a function\n    at model.<anonymous> (C:\\Users\\Vishal\\OneDrive\\Desktop\\new-course-player\\server\\models\\Article.js:66:5)\n    at Kareem.execPre (C:\\Users\\Vishal\\OneDrive\\Desktop\\new-course-player\\server\\node_modules\\kareem\\index.js:63:39)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async model.$__save (C:\\Users\\Vishal\\OneDrive\\Desktop\\new-course-player\\server\\node_modules\\mongoose\\lib\\model.js:369:5)\n    at async model.save (C:\\Users\\Vishal\\OneDrive\\Desktop\\new-course-player\\server\\node_modules\\mongoose\\lib\\model.js:609:5)\n    at async C:\\Users\\Vishal\\OneDrive\\Desktop\\new-course-player\\server\\routes\\articles.js:66:9",
+  "body": {
+    "title": "first",
+    "content": "firs",
+    "category": "general",
+    "tags": [],
+    "coverImage": "",
+    "videoUrl": "",
+    "isPublished": true
+  },
+  "userId": "6947c9b0b6738999c47387bf"
+}
+

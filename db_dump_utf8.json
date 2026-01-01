@@ -1,0 +1,943 @@
+{
+  "users": [
+    {
+      "_id": "6947bd9291010bca6632b796",
+      "name": "Super Admin",
+      "email": "admin@courselauncher.com",
+      "password": "$2b$12$K2iD0J3xLbC0oV2X2R.lb.x1EVWDEuZmMK3jJ3oZ2pYpKdaplMA3i",
+      "role": "superadmin",
+      "avatar": "",
+      "bio": "",
+      "phone": "",
+      "instructorProfile": {
+        "socialLinks": {
+          "website": "",
+          "linkedin": "",
+          "twitter": "",
+          "youtube": "",
+          "github": ""
+        },
+        "headline": "",
+        "expertise": [],
+        "experience": "",
+        "rating": 0,
+        "totalStudents": 0,
+        "totalCourses": 0
+      },
+      "isInstructorApproved": true,
+      "earnings": {
+        "total": 0,
+        "pending": 0,
+        "withdrawn": 0
+      },
+      "payoutDetails": {
+        "method": "",
+        "bankName": "",
+        "accountNumber": "",
+        "accountHolder": "",
+        "ifscCode": "",
+        "paypalEmail": ""
+      },
+      "purchasedCourses": [],
+      "wishlist": [],
+      "certificates": [],
+      "uiPreferences": {
+        "sidebarWidth": 280,
+        "videoPlayerSize": "normal",
+        "theme": "dark",
+        "language": "en",
+        "autoplay": true,
+        "playbackSpeed": 1
+      },
+      "notificationSettings": {
+        "email": true,
+        "push": true,
+        "courseUpdates": true,
+        "promotions": false
+      },
+      "isActive": true,
+      "isBanned": false,
+      "banReason": "",
+      "enrolledCourses": [],
+      "watchHistory": [],
+      "createdAt": "2025-12-21T09:27:46.371Z",
+      "updatedAt": "2025-12-21T09:27:46.371Z",
+      "__v": 0
+    },
+    {
+      "_id": "6947bd9291010bca6632b798",
+      "name": "John Instructor",
+      "email": "john@instructor.com",
+      "password": "$2b$12$5RIM3ahdUY5ikBC/pVJt..cw4bek6D1Lva/87WjPzhwP.aVhmYMgC",
+      "role": "instructor",
+      "avatar": "",
+      "bio": "",
+      "phone": "",
+      "instructorProfile": {
+        "headline": "Senior Full Stack Developer",
+        "expertise": [
+          "React",
+          "Node.js",
+          "MongoDB"
+        ],
+        "experience": "10+ years",
+        "totalCourses": 2,
+        "socialLinks": {
+          "website": "",
+          "linkedin": "",
+          "twitter": "",
+          "youtube": "",
+          "github": ""
+        },
+        "rating": 0,
+        "totalStudents": 0
+      },
+      "isInstructorApproved": true,
+      "earnings": {
+        "total": 0,
+        "pending": 0,
+        "withdrawn": 0
+      },
+      "payoutDetails": {
+        "method": "",
+        "bankName": "",
+        "accountNumber": "",
+        "accountHolder": "",
+        "ifscCode": "",
+        "paypalEmail": ""
+      },
+      "purchasedCourses": [],
+      "wishlist": [],
+      "certificates": [],
+      "uiPreferences": {
+        "sidebarWidth": 280,
+        "videoPlayerSize": "normal",
+        "theme": "dark",
+        "language": "en",
+        "autoplay": true,
+        "playbackSpeed": 1
+      },
+      "notificationSettings": {
+        "email": true,
+        "push": true,
+        "courseUpdates": true,
+        "promotions": false
+      },
+      "isActive": true,
+      "isBanned": false,
+      "banReason": "",
+      "enrolledCourses": [],
+      "watchHistory": [],
+      "createdAt": "2025-12-21T09:27:46.938Z",
+      "updatedAt": "2025-12-21T10:26:28.066Z",
+      "__v": 0
+    },
+    {
+      "_id": "6947bd9391010bca6632b79a",
+      "name": "Jane Smith",
+      "email": "jane@instructor.com",
+      "password": "$2b$12$haydyatolZpktuut2jD1rOnAqPN0HHfHsAEykW10CZ.y1sclLqfii",
+      "role": "instructor",
+      "avatar": "",
+      "bio": "",
+      "phone": "",
+      "instructorProfile": {
+        "headline": "UI/UX Design Expert",
+        "expertise": [
+          "Figma",
+          "Adobe XD",
+          "UI Design"
+        ],
+        "experience": "8 years",
+        "totalCourses": 2,
+        "socialLinks": {
+          "website": "",
+          "linkedin": "",
+          "twitter": "",
+          "youtube": "",
+          "github": ""
+        },
+        "rating": 0,
+        "totalStudents": 1
+      },
+      "isInstructorApproved": true,
+      "earnings": {
+        "total": 0,
+        "pending": 0,
+        "withdrawn": 0
+      },
+      "payoutDetails": {
+        "method": "",
+        "bankName": "",
+        "accountNumber": "",
+        "accountHolder": "",
+        "ifscCode": "",
+        "paypalEmail": ""
+      },
+      "purchasedCourses": [],
+      "wishlist": [],
+      "certificates": [],
+      "uiPreferences": {
+        "sidebarWidth": 280,
+        "videoPlayerSize": "normal",
+        "theme": "dark",
+        "language": "en",
+        "autoplay": true,
+        "playbackSpeed": 1
+      },
+      "notificationSettings": {
+        "email": true,
+        "push": true,
+        "courseUpdates": true,
+        "promotions": false
+      },
+      "isActive": true,
+      "isBanned": false,
+      "banReason": "",
+      "enrolledCourses": [],
+      "watchHistory": [],
+      "createdAt": "2025-12-21T09:27:47.488Z",
+      "updatedAt": "2025-12-21T10:38:55.101Z",
+      "__v": 0
+    },
+    {
+      "_id": "6947bd9491010bca6632b79c",
+      "name": "Alice Student",
+      "email": "alice@student.com",
+      "password": "$2b$12$pE.jvluwh1dude4dhEzCIOxUQL/Tw7r2GVGiGA30rjQeA4QdNdEQu",
+      "role": "student",
+      "avatar": "",
+      "bio": "",
+      "phone": "",
+      "instructorProfile": {
+        "socialLinks": {
+          "website": "",
+          "linkedin": "",
+          "twitter": "",
+          "youtube": "",
+          "github": ""
+        },
+        "headline": "",
+        "expertise": [],
+        "experience": "",
+        "rating": 0,
+        "totalStudents": 0,
+        "totalCourses": 0
+      },
+      "isInstructorApproved": false,
+      "earnings": {
+        "total": 0,
+        "pending": 0,
+        "withdrawn": 0
+      },
+      "payoutDetails": {
+        "method": "",
+        "bankName": "",
+        "accountNumber": "",
+        "accountHolder": "",
+        "ifscCode": "",
+        "paypalEmail": ""
+      },
+      "purchasedCourses": [],
+      "wishlist": [],
+      "certificates": [],
+      "uiPreferences": {
+        "sidebarWidth": 280,
+        "videoPlayerSize": "normal",
+        "theme": "dark",
+        "language": "en",
+        "autoplay": true,
+        "playbackSpeed": 1
+      },
+      "notificationSettings": {
+        "email": true,
+        "push": true,
+        "courseUpdates": true,
+        "promotions": false
+      },
+      "isActive": true,
+      "isBanned": false,
+      "banReason": "",
+      "enrolledCourses": [],
+      "watchHistory": [],
+      "createdAt": "2025-12-21T09:27:48.057Z",
+      "updatedAt": "2025-12-21T09:27:48.057Z",
+      "__v": 0
+    },
+    {
+      "_id": "6947bd9491010bca6632b79e",
+      "name": "Bob Student",
+      "email": "bob@student.com",
+      "password": "$2b$12$GTNRejgJwHCnGXsybSpVFeHKNVR/exVQ.53Nv62gVbIeXter2MdBy",
+      "role": "student",
+      "avatar": "",
+      "bio": "",
+      "phone": "",
+      "instructorProfile": {
+        "socialLinks": {
+          "website": "",
+          "linkedin": "",
+          "twitter": "",
+          "youtube": "",
+          "github": ""
+        },
+        "headline": "",
+        "expertise": [],
+        "experience": "",
+        "rating": 0,
+        "totalStudents": 0,
+        "totalCourses": 0
+      },
+      "isInstructorApproved": false,
+      "earnings": {
+        "total": 0,
+        "pending": 0,
+        "withdrawn": 0
+      },
+      "payoutDetails": {
+        "method": "",
+        "bankName": "",
+        "accountNumber": "",
+        "accountHolder": "",
+        "ifscCode": "",
+        "paypalEmail": ""
+      },
+      "purchasedCourses": [],
+      "wishlist": [],
+      "certificates": [],
+      "uiPreferences": {
+        "sidebarWidth": 280,
+        "videoPlayerSize": "normal",
+        "theme": "dark",
+        "language": "en",
+        "autoplay": true,
+        "playbackSpeed": 1
+      },
+      "notificationSettings": {
+        "email": true,
+        "push": true,
+        "courseUpdates": true,
+        "promotions": false
+      },
+      "isActive": true,
+      "isBanned": false,
+      "banReason": "",
+      "enrolledCourses": [],
+      "watchHistory": [],
+      "createdAt": "2025-12-21T09:27:48.621Z",
+      "updatedAt": "2025-12-21T09:27:48.621Z",
+      "__v": 0
+    },
+    {
+      "_id": "6947bd9591010bca6632b7a0",
+      "name": "Charlie Student",
+      "email": "charlie@student.com",
+      "password": "$2b$12$pVjmqTK1ZXrJaiumiw/P6uy810Mp2h.M6xyKCPJjOciF8HY42jWc6",
+      "role": "student",
+      "avatar": "",
+      "bio": "",
+      "phone": "",
+      "instructorProfile": {
+        "socialLinks": {
+          "website": "",
+          "linkedin": "",
+          "twitter": "",
+          "youtube": "",
+          "github": ""
+        },
+        "headline": "",
+        "expertise": [],
+        "experience": "",
+        "rating": 0,
+        "totalStudents": 0,
+        "totalCourses": 0
+      },
+      "isInstructorApproved": false,
+      "earnings": {
+        "total": 0,
+        "pending": 0,
+        "withdrawn": 0
+      },
+      "payoutDetails": {
+        "method": "",
+        "bankName": "",
+        "accountNumber": "",
+        "accountHolder": "",
+        "ifscCode": "",
+        "paypalEmail": ""
+      },
+      "purchasedCourses": [],
+      "wishlist": [],
+      "certificates": [],
+      "uiPreferences": {
+        "sidebarWidth": 280,
+        "videoPlayerSize": "normal",
+        "theme": "dark",
+        "language": "en",
+        "autoplay": true,
+        "playbackSpeed": 1
+      },
+      "notificationSettings": {
+        "email": true,
+        "push": true,
+        "courseUpdates": true,
+        "promotions": false
+      },
+      "isActive": true,
+      "isBanned": false,
+      "banReason": "",
+      "enrolledCourses": [],
+      "watchHistory": [],
+      "createdAt": "2025-12-21T09:27:49.241Z",
+      "updatedAt": "2025-12-21T09:27:49.241Z",
+      "__v": 0
+    },
+    {
+      "_id": "6947c9b0b6738999c47387bf",
+      "name": "vishal",
+      "email": "vishal@gmail.com",
+      "password": "$2b$12$7M4Ulbk6tpg.c4l68QFmZ.UvuymhjAJW2wNcT83QE3bnzBQ/ypQJ2",
+      "role": "instructor",
+      "avatar": "",
+      "bio": "",
+      "phone": "",
+      "instructorProfile": {
+        "socialLinks": {
+          "website": "",
+          "linkedin": "",
+          "twitter": "",
+          "youtube": "",
+          "github": ""
+        },
+        "headline": "",
+        "expertise": [],
+        "experience": "",
+        "rating": 0,
+        "totalStudents": 2,
+        "totalCourses": 5
+      },
+      "isInstructorApproved": true,
+      "instructorApplicationDate": "2025-12-21T10:19:28.903Z",
+      "earnings": {
+        "total": 10,
+        "pending": 0,
+        "withdrawn": 0
+      },
+      "payoutDetails": {
+        "method": "",
+        "bankName": "",
+        "accountNumber": "",
+        "accountHolder": "",
+        "ifscCode": "",
+        "paypalEmail": ""
+      },
+      "purchasedCourses": [],
+      "wishlist": [],
+      "certificates": [],
+      "uiPreferences": {
+        "sidebarWidth": 280,
+        "videoPlayerSize": "normal",
+        "theme": "dark",
+        "language": "en",
+        "autoplay": true,
+        "playbackSpeed": 1
+      },
+      "notificationSettings": {
+        "email": true,
+        "push": true,
+        "courseUpdates": true,
+        "promotions": false
+      },
+      "isActive": true,
+      "isBanned": false,
+      "banReason": "",
+      "enrolledCourses": [],
+      "watchHistory": [],
+      "createdAt": "2025-12-21T10:19:28.946Z",
+      "updatedAt": "2026-01-01T09:25:42.599Z",
+      "__v": 0,
+      "lastLogin": "2026-01-01T09:23:22.058Z",
+      "referralCode": "VISH3097"
+    },
+    {
+      "_id": "6947c9fdb6738999c47387d4",
+      "name": "API Test User",
+      "email": "api_test_1766312444586@example.com",
+      "password": "$2b$12$wVBGd8ImHWNCWU7hx56ONuL1ks7GhVVh2ZjWQuNbhVcUFKRbLpa3y",
+      "role": "student",
+      "avatar": "",
+      "bio": "",
+      "phone": "",
+      "instructorProfile": {
+        "socialLinks": {
+          "website": "",
+          "linkedin": "",
+          "twitter": "",
+          "youtube": "",
+          "github": ""
+        },
+        "headline": "",
+        "expertise": [],
+        "experience": "",
+        "rating": 0,
+        "totalStudents": 0,
+        "totalCourses": 0
+      },
+      "isInstructorApproved": true,
+      "earnings": {
+        "total": 0,
+        "pending": 0,
+        "withdrawn": 0
+      },
+      "payoutDetails": {
+        "method": "",
+        "bankName": "",
+        "accountNumber": "",
+        "accountHolder": "",
+        "ifscCode": "",
+        "paypalEmail": ""
+      },
+      "purchasedCourses": [],
+      "wishlist": [],
+      "certificates": [],
+      "uiPreferences": {
+        "sidebarWidth": 280,
+        "videoPlayerSize": "normal",
+        "theme": "dark",
+        "language": "en",
+        "autoplay": true,
+        "playbackSpeed": 1
+      },
+      "notificationSettings": {
+        "email": true,
+        "push": true,
+        "courseUpdates": true,
+        "promotions": false
+      },
+      "isActive": true,
+      "isBanned": false,
+      "banReason": "",
+      "enrolledCourses": [],
+      "watchHistory": [],
+      "createdAt": "2025-12-21T10:20:45.111Z",
+      "updatedAt": "2025-12-21T10:20:45.111Z",
+      "__v": 0
+    },
+    {
+      "_id": "6947cd99a08a8447c363b1a8",
+      "name": "vishal2",
+      "email": "vishal2@gmail.com",
+      "password": "$2b$12$ymEKLFUx1cPyZjZBy1zH3usut1O5ak4n3oEe69CkgcPwmfr2Q5IoO",
+      "role": "student",
+      "avatar": "",
+      "bio": "",
+      "phone": "",
+      "instructorProfile": {
+        "socialLinks": {
+          "website": "",
+          "linkedin": "",
+          "twitter": "",
+          "youtube": "",
+          "github": ""
+        },
+        "headline": "",
+        "expertise": [],
+        "experience": "",
+        "rating": 0,
+        "totalStudents": 0,
+        "totalCourses": 0
+      },
+      "isInstructorApproved": true,
+      "earnings": {
+        "total": 0,
+        "pending": 0,
+        "withdrawn": 0
+      },
+      "payoutDetails": {
+        "method": "",
+        "bankName": "",
+        "accountNumber": "",
+        "accountHolder": "",
+        "ifscCode": "",
+        "paypalEmail": ""
+      },
+      "purchasedCourses": [],
+      "wishlist": [
+        "69563d96394663939a579470"
+      ],
+      "certificates": [],
+      "uiPreferences": {
+        "sidebarWidth": 280,
+        "videoPlayerSize": "normal",
+        "theme": "dark",
+        "language": "en",
+        "autoplay": true,
+        "playbackSpeed": 1
+      },
+      "notificationSettings": {
+        "email": true,
+        "push": true,
+        "courseUpdates": true,
+        "promotions": false
+      },
+      "isActive": true,
+      "isBanned": false,
+      "banReason": "",
+      "enrolledCourses": [
+        {
+          "courseId": "6947cbeea08a8447c363b0cb",
+          "enrolledAt": "2025-12-21T10:36:47.206Z",
+          "progress": 0,
+          "_id": "6947cdbfa08a8447c363b1ca"
+        },
+        {
+          "courseId": "6947bd9591010bca6632b7b4",
+          "enrolledAt": "2025-12-21T10:38:55.006Z",
+          "progress": 0,
+          "_id": "6947ce3fa08a8447c363b272"
+        },
+        {
+          "courseId": "6955355268c8ab2a9c5ffa25",
+          "enrolledAt": "2025-12-31T15:03:28.122Z",
+          "progress": 0,
+          "_id": "69553b4068c8ab2a9c5ffda4"
+        }
+      ],
+      "watchHistory": [
+        {
+          "videoId": "6947cbf0a08a8447c363b0d1",
+          "courseId": "6947cbeea08a8447c363b0cb",
+          "progress": 2,
+          "completed": true,
+          "lastWatched": "2025-12-29T06:18:18.705Z",
+          "_id": "69521d2a2dc109e0331ca88a"
+        },
+        {
+          "videoId": "6947bd9691010bca6632b7b7",
+          "courseId": "6947bd9591010bca6632b7b4",
+          "progress": 0,
+          "completed": false,
+          "lastWatched": "2025-12-29T15:45:37.211Z",
+          "_id": "6952a221e6c6a48534e1beb0"
+        },
+        {
+          "videoId": "6947bd9691010bca6632b7b9",
+          "courseId": "6947bd9591010bca6632b7b4",
+          "progress": 0,
+          "completed": false,
+          "lastWatched": "2025-12-29T15:45:42.005Z",
+          "_id": "6952a226e6c6a48534e1bec4"
+        },
+        {
+          "videoId": "6955355268c8ab2a9c5ffa2b",
+          "courseId": "6955355268c8ab2a9c5ffa25",
+          "progress": 6.251137,
+          "completed": true,
+          "lastWatched": "2025-12-31T15:23:00.141Z",
+          "_id": "69553fd468c8ab2a9c60020b"
+        }
+      ],
+      "createdAt": "2025-12-21T10:36:09.599Z",
+      "updatedAt": "2026-01-01T09:51:08.957Z",
+      "__v": 4,
+      "lastLogin": "2026-01-01T09:48:29.871Z",
+      "referralCode": "VISH9890",
+      "followers": [],
+      "following": [],
+      "gamification": {
+        "badges": [],
+        "level": 1,
+        "streak": 0,
+        "xp": 0
+      },
+      "referralStats": {
+        "clicks": 0,
+        "totalEarnings": 0,
+        "totalReferrals": 0
+      }
+    },
+    {
+      "_id": "6947d9387c29bc6a7bcc6cca",
+      "name": "Super Admin",
+      "email": "vishalthakur732007@gmail.com",
+      "password": "$2b$10$.N7glFPWt5S8jFLAJcS3uOWNGxFrUVcN6Tc9COk4ptwP8OGmbH6rW",
+      "role": "superadmin",
+      "avatar": "",
+      "bio": "",
+      "phone": "",
+      "instructorProfile": {
+        "socialLinks": {
+          "website": "",
+          "linkedin": "",
+          "twitter": "",
+          "youtube": "",
+          "github": ""
+        },
+        "headline": "",
+        "expertise": [],
+        "experience": "",
+        "rating": 0,
+        "totalStudents": 0,
+        "totalCourses": 0
+      },
+      "isInstructorApproved": false,
+      "earnings": {
+        "total": 0,
+        "pending": 0,
+        "withdrawn": 0
+      },
+      "payoutDetails": {
+        "method": "",
+        "bankName": "",
+        "accountNumber": "",
+        "accountHolder": "",
+        "ifscCode": "",
+        "paypalEmail": ""
+      },
+      "purchasedCourses": [],
+      "wishlist": [],
+      "certificates": [],
+      "uiPreferences": {
+        "sidebarWidth": 280,
+        "videoPlayerSize": "normal",
+        "theme": "dark",
+        "language": "en",
+        "autoplay": true,
+        "playbackSpeed": 1
+      },
+      "notificationSettings": {
+        "email": true,
+        "push": true,
+        "courseUpdates": true,
+        "promotions": false
+      },
+      "isActive": true,
+      "isBanned": false,
+      "banReason": "",
+      "enrolledCourses": [],
+      "watchHistory": [],
+      "createdAt": "2025-12-21T11:25:44.674Z",
+      "updatedAt": "2026-01-01T09:33:07.486Z",
+      "__v": 0,
+      "lastLogin": "2026-01-01T09:33:07.485Z",
+      "referralCode": "SUPE4657"
+    }
+  ],
+  "enrollments": [
+    {
+      "_id": "6947bd9591010bca6632b7ab",
+      "studentId": "6947bd9491010bca6632b79c",
+      "courseId": "6947bd9591010bca6632b7a2",
+      "instructorId": "6947bd9291010bca6632b798",
+      "enrolledAt": "2025-11-25T09:27:49.617Z",
+      "progress": 29,
+      "totalTimeSpent": 0,
+      "isCompleted": false,
+      "certificateIssued": false,
+      "hasReviewed": false,
+      "completedVideos": [],
+      "lastAccessedAt": "2025-12-21T09:27:49.617Z",
+      "notes": [],
+      "createdAt": "2025-12-21T09:27:49.618Z",
+      "updatedAt": "2025-12-21T09:27:49.618Z",
+      "__v": 0
+    },
+    {
+      "_id": "6947bd9591010bca6632b7b0",
+      "studentId": "6947bd9591010bca6632b7a0",
+      "courseId": "6947bd9591010bca6632b7a2",
+      "instructorId": "6947bd9291010bca6632b798",
+      "enrolledAt": "2025-12-04T09:27:49.805Z",
+      "progress": 92,
+      "totalTimeSpent": 0,
+      "isCompleted": false,
+      "certificateIssued": false,
+      "hasReviewed": false,
+      "completedVideos": [],
+      "lastAccessedAt": "2025-12-21T09:27:49.806Z",
+      "notes": [],
+      "createdAt": "2025-12-21T09:27:49.806Z",
+      "updatedAt": "2025-12-21T09:27:49.806Z",
+      "__v": 0
+    },
+    {
+      "_id": "6947bd9691010bca6632b7bd",
+      "studentId": "6947bd9491010bca6632b79c",
+      "courseId": "6947bd9591010bca6632b7b4",
+      "instructorId": "6947bd9391010bca6632b79a",
+      "enrolledAt": "2025-12-13T09:27:50.302Z",
+      "progress": 42,
+      "totalTimeSpent": 0,
+      "isCompleted": false,
+      "certificateIssued": false,
+      "hasReviewed": false,
+      "completedVideos": [],
+      "lastAccessedAt": "2025-12-21T09:27:50.302Z",
+      "notes": [],
+      "createdAt": "2025-12-21T09:27:50.302Z",
+      "updatedAt": "2025-12-21T09:27:50.302Z",
+      "__v": 0
+    },
+    {
+      "_id": "6947bd9691010bca6632b7c2",
+      "studentId": "6947bd9491010bca6632b79e",
+      "courseId": "6947bd9591010bca6632b7b4",
+      "instructorId": "6947bd9391010bca6632b79a",
+      "enrolledAt": "2025-12-11T09:27:50.486Z",
+      "progress": 91,
+      "totalTimeSpent": 0,
+      "isCompleted": false,
+      "certificateIssued": false,
+      "hasReviewed": false,
+      "completedVideos": [],
+      "lastAccessedAt": "2025-12-21T09:27:50.487Z",
+      "notes": [],
+      "createdAt": "2025-12-21T09:27:50.487Z",
+      "updatedAt": "2025-12-21T09:27:50.487Z",
+      "__v": 0
+    },
+    {
+      "_id": "6947bd9691010bca6632b7cf",
+      "studentId": "6947bd9491010bca6632b79c",
+      "courseId": "6947bd9691010bca6632b7c6",
+      "instructorId": "6947bd9291010bca6632b798",
+      "enrolledAt": "2025-12-21T09:27:50.944Z",
+      "progress": 55,
+      "totalTimeSpent": 0,
+      "isCompleted": false,
+      "certificateIssued": false,
+      "hasReviewed": false,
+      "completedVideos": [],
+      "lastAccessedAt": "2025-12-21T09:27:50.944Z",
+      "notes": [],
+      "createdAt": "2025-12-21T09:27:50.944Z",
+      "updatedAt": "2025-12-21T09:27:50.944Z",
+      "__v": 0
+    },
+    {
+      "_id": "6947bd9791010bca6632b7d4",
+      "studentId": "6947bd9591010bca6632b7a0",
+      "courseId": "6947bd9691010bca6632b7c6",
+      "instructorId": "6947bd9291010bca6632b798",
+      "enrolledAt": "2025-12-20T09:27:51.127Z",
+      "progress": 77,
+      "totalTimeSpent": 0,
+      "isCompleted": false,
+      "certificateIssued": false,
+      "hasReviewed": false,
+      "completedVideos": [],
+      "lastAccessedAt": "2025-12-21T09:27:51.128Z",
+      "notes": [],
+      "createdAt": "2025-12-21T09:27:51.129Z",
+      "updatedAt": "2025-12-21T09:27:51.129Z",
+      "__v": 0
+    },
+    {
+      "_id": "6947bd9791010bca6632b7e1",
+      "studentId": "6947bd9491010bca6632b79c",
+      "courseId": "6947bd9791010bca6632b7d8",
+      "instructorId": "6947bd9391010bca6632b79a",
+      "enrolledAt": "2025-12-20T09:27:51.563Z",
+      "progress": 35,
+      "totalTimeSpent": 0,
+      "isCompleted": false,
+      "certificateIssued": false,
+      "hasReviewed": false,
+      "completedVideos": [],
+      "lastAccessedAt": "2025-12-21T09:27:51.563Z",
+      "notes": [],
+      "createdAt": "2025-12-21T09:27:51.564Z",
+      "updatedAt": "2025-12-21T09:27:51.564Z",
+      "__v": 0
+    },
+    {
+      "_id": "6947bd9791010bca6632b7e6",
+      "studentId": "6947bd9491010bca6632b79e",
+      "courseId": "6947bd9791010bca6632b7d8",
+      "instructorId": "6947bd9391010bca6632b79a",
+      "enrolledAt": "2025-12-05T09:27:51.743Z",
+      "progress": 69,
+      "totalTimeSpent": 0,
+      "isCompleted": false,
+      "certificateIssued": false,
+      "hasReviewed": false,
+      "completedVideos": [],
+      "lastAccessedAt": "2025-12-21T09:27:51.744Z",
+      "notes": [],
+      "createdAt": "2025-12-21T09:27:51.744Z",
+      "updatedAt": "2025-12-21T09:27:51.744Z",
+      "__v": 0
+    },
+    {
+      "_id": "6947cdbea08a8447c363b1c6",
+      "studentId": "6947cd99a08a8447c363b1a8",
+      "courseId": "6947cbeea08a8447c363b0cb",
+      "instructorId": "6947c9b0b6738999c47387bf",
+      "progress": 100,
+      "totalTimeSpent": 10,
+      "isCompleted": false,
+      "certificateIssued": false,
+      "hasReviewed": false,
+      "enrolledAt": "2025-12-21T10:36:46.972Z",
+      "completedVideos": [
+        {
+          "videoId": "6947cbf0a08a8447c363b0d1",
+          "completedAt": "2025-12-29T06:18:14.390Z",
+          "timeSpent": 10,
+          "_id": "69521d262dc109e0331ca86c"
+        }
+      ],
+      "lastAccessedAt": "2025-12-29T06:18:18.244Z",
+      "notes": [],
+      "createdAt": "2025-12-21T10:36:46.973Z",
+      "updatedAt": "2025-12-29T06:18:18.465Z",
+      "__v": 1,
+      "lastAccessedVideo": "6947cbf0a08a8447c363b0d1"
+    },
+    {
+      "_id": "6947ce3ea08a8447c363b26e",
+      "studentId": "6947cd99a08a8447c363b1a8",
+      "courseId": "6947bd9591010bca6632b7b4",
+      "instructorId": "6947bd9391010bca6632b79a",
+      "progress": 0,
+      "totalTimeSpent": 10,
+      "isCompleted": false,
+      "certificateIssued": false,
+      "hasReviewed": false,
+      "enrolledAt": "2025-12-21T10:38:54.750Z",
+      "completedVideos": [],
+      "lastAccessedAt": "2025-12-29T15:45:41.704Z",
+      "notes": [],
+      "createdAt": "2025-12-21T10:38:54.751Z",
+      "updatedAt": "2025-12-29T15:45:41.847Z",
+      "__v": 0,
+      "lastAccessedVideo": "6947bd9691010bca6632b7b9"
+    },
+    {
+      "_id": "69553b3f68c8ab2a9c5ffda0",
+      "studentId": "6947cd99a08a8447c363b1a8",
+      "courseId": "6955355268c8ab2a9c5ffa25",
+      "instructorId": "6947c9b0b6738999c47387bf",
+      "progress": 100,
+      "totalTimeSpent": 10,
+      "isCompleted": false,
+      "certificateIssued": false,
+      "hasReviewed": false,
+      "enrolledAt": "2025-12-31T15:03:27.883Z",
+      "completedVideos": [
+        {
+          "videoId": "6955355268c8ab2a9c5ffa2b",
+          "completedAt": "2025-12-31T15:04:01.048Z",
+          "timeSpent": 10,
+          "_id": "69553b6168c8ab2a9c5ffdc7"
+        }
+      ],
+      "lastAccessedAt": "2025-12-31T15:22:59.816Z",
+      "notes": [],
+      "createdAt": "2025-12-31T15:03:27.883Z",
+      "updatedAt": "2025-12-31T15:22:59.961Z",
+      "__v": 1,
+      "lastAccessedVideo": "6955355268c8ab2a9c5ffa2b"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+Starting debug script...
+Connected to MongoDB
+Total Users: 0
+Target user not found by ID. Searching by role instructor...
+No target user or instructor found.
+Disconnected.

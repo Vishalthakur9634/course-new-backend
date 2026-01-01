@@ -1,0 +1,9 @@
+Starting debug script v4...
+Connecting to DB: mongodb+srv://vishal...
+Connected to MongoDB
+Total Users: 6
+Target User Found: gulshan2@gmail.com (6931c4fbf261c387b8dd7bb6)
+Current Approved Status: false
+Approving user...
+User approved.
+Disconnected.
