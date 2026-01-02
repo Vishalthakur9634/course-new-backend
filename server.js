@@ -8,7 +8,11 @@ const app = express();
 
 // Middleware
 app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+    origin: [
+        'http://localhost:5173',
+        'https://course-new-frontend.netlify.app',
+        process.env.FRONTEND_URL
+    ].filter(Boolean), // Remove nulls/undefined
     credentials: true
 }));
 app.use(express.json());
@@ -119,7 +123,11 @@ const PORT = process.env.PORT || 5001;
 const server = require('http').createServer(app);
 const io = require('socket.io')(server, {
     cors: {
-        origin: process.env.FRONTEND_URL || "http://localhost:5173", // Adjust in production
+        origin: [
+            "http://localhost:5173",
+            "https://course-new-frontend.netlify.app",
+            process.env.FRONTEND_URL
+        ].filter(Boolean),
         methods: ["GET", "POST"]
     }
 });
