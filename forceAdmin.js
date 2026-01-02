@@ -23,7 +23,7 @@ const forceAdminRole = async () => {
             console.log('ID:', user._id);
             console.log('\nCopy this to browser console:');
             console.log(`localStorage.setItem('user', '${JSON.stringify({ id: user._id, name: user.name, email: user.email, role: user.role })}');`);
-            console.log('\nThen go to: http://localhost:5173/admin');
+            console.log(`\nThen go to: ${process.env.FRONTEND_URL || 'http://localhost:5173'}/admin`);
         } else {
             console.log('✗ User not found');
         }

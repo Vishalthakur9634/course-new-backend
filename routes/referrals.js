@@ -11,7 +11,7 @@ router.get('/stats', authenticate, async (req, res) => {
 
         res.json({
             referralCode: user.referralCode,
-            link: `${process.env.CLIENT_URL || 'http://localhost:5173'}/register?ref=${user.referralCode}`,
+            link: `${process.env.FRONTEND_URL || 'http://localhost:5173'}/register?ref=${user.referralCode}`,
             stats: user.referralStats,
             earnings: user.earnings
         });
