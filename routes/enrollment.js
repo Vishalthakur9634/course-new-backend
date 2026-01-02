@@ -240,12 +240,16 @@ router.put('/:courseId/progress', authenticate, requireCourseAccess, async (req,
         const { courseId } = req.params;
         const { videoId, progress, timeSpent, completed } = req.body;
 
+        console.log(`[Progress Update] Updating for Course: ${courseId}, User: ${req.user._id}`);
+        console.log(`[Progress Update] Video: ${videoId}, Completed: ${completed}`);
+
         const enrollment = await Enrollment.findOne({
             studentId: req.user._id,
             courseId
         });
 
         if (!enrollment) {
+            console.error(`[Progress Update] Enrollment NOT FOUND for User ${req.user._id} and Course ${courseId}`);
             return res.status(404).json({ message: 'Enrollment not found' });
         }
 
