@@ -25,37 +25,56 @@ app.use((req, res, next) => {
     next();
 });
 
-// Serve static files with manual Byte-Range support for maximum production stability
+// 1. HIGH-PRIORITY: Isolated Media Streaming Middleware
+// Move this to the VERY TOP to prevent session/CORS/body-parser interference
 const uploadsPath = path.join(__dirname, 'uploads');
-app.use('/uploads', (req, res) => {
-    const fileUrl = req.url.split('?')[0]; // Strip query params
-    const filePath = path.join(uploadsPath, decodeURIComponent(fileUrl));
 
-    // Security check: ensure path is within uploads directory
-    if (!filePath.startsWith(uploadsPath)) {
-        return res.status(403).send('Forbidden');
-    }
+// Helper for case-insensitive file matching (Linux fix for Render)
+const findFileCaseInsensitive = (basePath, relativePath) => {
+    try {
+        const segments = relativePath.split(/[\\/]/).filter(Boolean);
+        let currentPath = basePath;
+        for (const segment of segments) {
+            const files = fs.readdirSync(currentPath);
+            const found = files.find(f => f.toLowerCase() === segment.toLowerCase());
+            if (!found) return null;
+            currentPath = path.join(currentPath, found);
+        }
+        return currentPath;
+    } catch (e) { return null; }
+};
 
-    if (!fs.existsSync(filePath)) {
-        console.error(`[Static] 404: ${filePath}`);
-        return res.status(404).send(`File ${fileUrl} not found on disk`);
-    }
-
-    const stat = fs.statSync(filePath);
-    const fileSize = stat.size;
-    const range = req.headers.range;
-
-    // Set standard CORS and security headers
+app.use('/uploads', (req, res, next) => {
+    // Explicit CORS for media - bypasses global cors()
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Range, Origin, X-Requested-With, Content-Type, Accept');
+    res.setHeader('Access-Control-Allow-Headers', 'Range, Origin, Content-Type, Accept');
     res.setHeader('Access-Control-Expose-Headers', 'Content-Length, Content-Range');
     res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
     res.setHeader('Accept-Ranges', 'bytes');
 
     if (req.method === 'OPTIONS') return res.sendStatus(200);
 
-    // Determine Content-Type
+    const fileUrl = req.url.split('?')[0];
+    const decodedUrl = decodeURIComponent(fileUrl);
+
+    // Attempt exact match first
+    let filePath = path.join(uploadsPath, decodedUrl);
+    if (!fs.existsSync(filePath)) {
+        // Fallback to case-insensitive match (Crucial for Linux deployments like Render)
+        const caseInsensitivePath = findFileCaseInsensitive(uploadsPath, decodedUrl);
+        if (caseInsensitivePath) {
+            filePath = caseInsensitivePath;
+        } else {
+            console.error(`[Static] 404 - Not Found: ${fileUrl}`);
+            return res.status(404).send(`File not found: ${fileUrl}`);
+        }
+    }
+
+    const stat = fs.statSync(filePath);
+    const fileSize = stat.size;
+    const range = req.headers.range;
+
     let contentType = 'application/octet-stream';
     const ext = path.extname(filePath).toLowerCase();
     if (ext === '.mp4') contentType = 'video/mp4';
