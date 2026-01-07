@@ -25,19 +25,22 @@ app.use((req, res, next) => {
 });
 
 // Serve static files with proper MIME types for HLS streaming
+const uploadsPath = path.join(__dirname, 'uploads');
 app.use('/uploads', (req, res, next) => {
-    // Audit log for file access
-    console.log(`[Static] Attempting to access: ${req.url}`);
+    const fullPath = path.join(uploadsPath, req.url);
+    console.log(`[Static] Request: ${req.url} -> ${fullPath}`);
 
     // Explicitly set CORS for all media assets
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Range');
+    res.setHeader('Access-Control-Allow-Headers', 'Range, x-requested-with');
     res.setHeader('Access-Control-Expose-Headers', 'Content-Length, Content-Range');
     res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
 
+    if (req.method === 'OPTIONS') return res.sendStatus(200);
     next();
-}, express.static(path.join(__dirname, 'uploads'), {
+}, express.static(uploadsPath, {
+    maxAge: '1d',
     setHeaders: (res, filePath) => {
         if (filePath.endsWith('.m3u8')) {
             res.setHeader('Content-Type', 'application/vnd.apple.mpegurl');
@@ -52,7 +55,7 @@ app.use('/uploads', (req, res, next) => {
 // Fallback for missing static files to log explicitly
 app.use('/uploads', (req, res) => {
     console.error(`[Static] 404 Not Found: ${req.url}`);
-    res.status(404).send('File not found');
+    res.status(404).send(`File ${req.url} not found on server`);
 });
 
 // Database connection
