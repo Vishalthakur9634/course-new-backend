@@ -24,38 +24,65 @@ app.use((req, res, next) => {
     next();
 });
 
-// Serve static files with proper MIME types for HLS streaming
+// Serve static files with manual Byte-Range support for maximum production stability
 const uploadsPath = path.join(__dirname, 'uploads');
-app.use('/uploads', (req, res, next) => {
-    const fullPath = path.join(uploadsPath, req.url);
-    console.log(`[Static] Request: ${req.url} -> ${fullPath}`);
+app.use('/uploads', (req, res) => {
+    const fileUrl = req.url.split('?')[0]; // Strip query params
+    const filePath = path.join(uploadsPath, fileUrl);
 
-    // Explicitly set CORS for all media assets
+    // Security check: ensure path is within uploads directory
+    if (!filePath.startsWith(uploadsPath)) {
+        return res.status(403).send('Forbidden');
+    }
+
+    if (!fs.existsSync(filePath)) {
+        console.error(`[Static] 404: ${filePath}`);
+        return res.status(404).send('File not found');
+    }
+
+    const stat = fs.statSync(filePath);
+    const fileSize = stat.size;
+    const range = req.headers.range;
+
+    // Set standard CORS and security headers
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Range, x-requested-with');
     res.setHeader('Access-Control-Expose-Headers', 'Content-Length, Content-Range');
     res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+    res.setHeader('Accept-Ranges', 'bytes');
 
     if (req.method === 'OPTIONS') return res.sendStatus(200);
-    next();
-}, express.static(uploadsPath, {
-    maxAge: '1d',
-    setHeaders: (res, filePath) => {
-        if (filePath.endsWith('.m3u8')) {
-            res.setHeader('Content-Type', 'application/vnd.apple.mpegurl');
-        } else if (filePath.endsWith('.ts')) {
-            res.setHeader('Content-Type', 'video/mp2t');
-        } else if (filePath.endsWith('.mp4')) {
-            res.setHeader('Content-Type', 'video/mp4');
-        }
-    }
-}));
 
-// Fallback for missing static files to log explicitly
-app.use('/uploads', (req, res) => {
-    console.error(`[Static] 404 Not Found: ${req.url}`);
-    res.status(404).send(`File ${req.url} not found on server`);
+    // Determine Content-Type
+    let contentType = 'application/octet-stream';
+    if (filePath.endsWith('.mp4')) contentType = 'video/mp4';
+    else if (filePath.endsWith('.m3u8')) contentType = 'application/vnd.apple.mpegurl';
+    else if (filePath.endsWith('.ts')) contentType = 'video/mp2t';
+    else if (filePath.endsWith('.jpg') || filePath.endsWith('.jpeg')) contentType = 'image/jpeg';
+    else if (filePath.endsWith('.png')) contentType = 'image/png';
+    else if (filePath.endsWith('.webp')) contentType = 'image/webp';
+
+    if (range) {
+        const parts = range.replace(/bytes=/, "").split("-");
+        const start = parseInt(parts[0], 10);
+        const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
+        const chunksize = (end - start) + 1;
+        const file = fs.createReadStream(filePath, { start, end });
+
+        res.writeHead(206, {
+            'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+            'Content-Length': chunksize,
+            'Content-Type': contentType,
+        });
+        file.pipe(res);
+    } else {
+        res.writeHead(200, {
+            'Content-Length': fileSize,
+            'Content-Type': contentType,
+        });
+        fs.createReadStream(filePath).pipe(res);
+    }
 });
 
 // Database connection
