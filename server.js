@@ -28,7 +28,7 @@ app.use((req, res, next) => {
 const uploadsPath = path.join(__dirname, 'uploads');
 app.use('/uploads', (req, res) => {
     const fileUrl = req.url.split('?')[0]; // Strip query params
-    const filePath = path.join(uploadsPath, fileUrl);
+    const filePath = path.join(uploadsPath, decodeURIComponent(fileUrl));
 
     // Security check: ensure path is within uploads directory
     if (!filePath.startsWith(uploadsPath)) {
@@ -37,7 +37,7 @@ app.use('/uploads', (req, res) => {
 
     if (!fs.existsSync(filePath)) {
         console.error(`[Static] 404: ${filePath}`);
-        return res.status(404).send('File not found');
+        return res.status(404).send(`File ${fileUrl} not found on disk`);
     }
 
     const stat = fs.statSync(filePath);
@@ -47,7 +47,7 @@ app.use('/uploads', (req, res) => {
     // Set standard CORS and security headers
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Range, x-requested-with');
+    res.setHeader('Access-Control-Allow-Headers', 'Range, Origin, X-Requested-With, Content-Type, Accept');
     res.setHeader('Access-Control-Expose-Headers', 'Content-Length, Content-Range');
     res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
     res.setHeader('Accept-Ranges', 'bytes');
@@ -56,17 +56,30 @@ app.use('/uploads', (req, res) => {
 
     // Determine Content-Type
     let contentType = 'application/octet-stream';
-    if (filePath.endsWith('.mp4')) contentType = 'video/mp4';
-    else if (filePath.endsWith('.m3u8')) contentType = 'application/vnd.apple.mpegurl';
-    else if (filePath.endsWith('.ts')) contentType = 'video/mp2t';
-    else if (filePath.endsWith('.jpg') || filePath.endsWith('.jpeg')) contentType = 'image/jpeg';
-    else if (filePath.endsWith('.png')) contentType = 'image/png';
-    else if (filePath.endsWith('.webp')) contentType = 'image/webp';
+    const ext = path.extname(filePath).toLowerCase();
+    if (ext === '.mp4') contentType = 'video/mp4';
+    else if (ext === '.m3u8') contentType = 'application/vnd.apple.mpegurl';
+    else if (ext === '.ts') contentType = 'video/mp2t';
+    else if (['.jpg', '.jpeg'].includes(ext)) contentType = 'image/jpeg';
+    else if (ext === '.png') contentType = 'image/png';
+    else if (ext === '.webp') contentType = 'image/webp';
+
+    if (req.method === 'HEAD') {
+        res.setHeader('Content-Type', contentType);
+        res.setHeader('Content-Length', fileSize);
+        return res.status(200).end();
+    }
 
     if (range) {
         const parts = range.replace(/bytes=/, "").split("-");
         const start = parseInt(parts[0], 10);
         const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
+
+        if (start >= fileSize || end >= fileSize) {
+            res.setHeader('Content-Range', `bytes */${fileSize}`);
+            return res.status(416).send('Requested range not satisfiable');
+        }
+
         const chunksize = (end - start) + 1;
         const file = fs.createReadStream(filePath, { start, end });
 
