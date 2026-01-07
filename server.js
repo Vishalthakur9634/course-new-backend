@@ -27,10 +27,18 @@ app.use((req, res, next) => {
 // Serve static files with proper MIME types for HLS streaming
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
     setHeaders: (res, filePath) => {
+        // Explicitly set CORS for all media assets
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
+        res.setHeader('Access-Control-Allow-Headers', 'Range');
+        res.setHeader('Access-Control-Expose-Headers', 'Content-Length, Content-Range');
+
         if (filePath.endsWith('.m3u8')) {
             res.setHeader('Content-Type', 'application/vnd.apple.mpegurl');
         } else if (filePath.endsWith('.ts')) {
             res.setHeader('Content-Type', 'video/mp2t');
+        } else if (filePath.endsWith('.mp4')) {
+            res.setHeader('Content-Type', 'video/mp4');
         }
     }
 }));
