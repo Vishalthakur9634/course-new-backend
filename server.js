@@ -165,7 +165,10 @@ app.use('/api/articles', articleRoutes);
 app.use('/api/referrals', referralRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/practice', practiceRoutes);
-app.use('/api/reels', require('./routes/reels')); // [NEW] Reels routes
+app.use('/api/reels', require('./routes/reels'));
+app.use('/api/gamification', require('./routes/gamification'));
+app.use('/api/events', require('./routes/events'));
+// [NEW] Reels routes
 app.use('/api/assignments', require('./routes/assignments')); // [NEW] Assignment routes
 app.use('/api/content', require('./routes/content')); // [NEW] Content routes (Sectors, Skills, Vault, AI)
 
