@@ -25,14 +25,20 @@ app.use((req, res, next) => {
 });
 
 // Serve static files with proper MIME types for HLS streaming
-app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
-    setHeaders: (res, filePath) => {
-        // Explicitly set CORS for all media assets
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
-        res.setHeader('Access-Control-Allow-Headers', 'Range');
-        res.setHeader('Access-Control-Expose-Headers', 'Content-Length, Content-Range');
+app.use('/uploads', (req, res, next) => {
+    // Audit log for file access
+    console.log(`[Static] Attempting to access: ${req.url}`);
 
+    // Explicitly set CORS for all media assets
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Range');
+    res.setHeader('Access-Control-Expose-Headers', 'Content-Length, Content-Range');
+    res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+
+    next();
+}, express.static(path.join(__dirname, 'uploads'), {
+    setHeaders: (res, filePath) => {
         if (filePath.endsWith('.m3u8')) {
             res.setHeader('Content-Type', 'application/vnd.apple.mpegurl');
         } else if (filePath.endsWith('.ts')) {
@@ -42,6 +48,12 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
         }
     }
 }));
+
+// Fallback for missing static files to log explicitly
+app.use('/uploads', (req, res) => {
+    console.error(`[Static] 404 Not Found: ${req.url}`);
+    res.status(404).send('File not found');
+});
 
 // Database connection
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/course-launcher', {
