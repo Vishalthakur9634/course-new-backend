@@ -45,76 +45,106 @@ const findFileCaseInsensitive = (basePath, relativePath) => {
 };
 
 app.use('/uploads', (req, res, next) => {
-    // Explicit CORS for media - bypasses global cors()
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Range, Origin, Content-Type, Accept');
-    res.setHeader('Access-Control-Expose-Headers', 'Content-Length, Content-Range');
-    res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
-    res.setHeader('Accept-Ranges', 'bytes');
+    try {
+        // Explicit CORS for media - bypasses global cors()
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
+        res.setHeader('Access-Control-Allow-Headers', 'Range, Origin, Content-Type, Accept');
+        res.setHeader('Access-Control-Expose-Headers', 'Content-Length, Content-Range');
+        res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+        res.setHeader('Accept-Ranges', 'bytes');
 
-    if (req.method === 'OPTIONS') return res.sendStatus(200);
+        if (req.method === 'OPTIONS') return res.sendStatus(200);
 
-    const fileUrl = req.url.split('?')[0];
-    const decodedUrl = decodeURIComponent(fileUrl);
+        const fileUrl = req.url.split('?')[0];
+        const decodedUrl = decodeURIComponent(fileUrl);
 
-    // Attempt exact match first
-    let filePath = path.join(uploadsPath, decodedUrl);
-    if (!fs.existsSync(filePath)) {
-        // Fallback to case-insensitive match (Crucial for Linux deployments like Render)
-        const caseInsensitivePath = findFileCaseInsensitive(uploadsPath, decodedUrl);
-        if (caseInsensitivePath) {
-            filePath = caseInsensitivePath;
+        // Attempt exact match first
+        let filePath = path.join(uploadsPath, decodedUrl);
+        let resolutionMethod = 'EXACT';
+
+        if (!fs.existsSync(filePath)) {
+            // Fallback to case-insensitive match (Crucial for Linux deployments like Render)
+            const caseInsensitivePath = findFileCaseInsensitive(uploadsPath, decodedUrl);
+            if (caseInsensitivePath) {
+                filePath = caseInsensitivePath;
+                resolutionMethod = 'CASE_INSENSITIVE';
+            } else {
+                console.error(`[Static] 404 - NOT FOUND: ${fileUrl} (Full Path: ${filePath})`);
+                return res.status(404).send(`File not found: ${fileUrl}`);
+            }
+        }
+
+        const stat = fs.statSync(filePath);
+
+        if (stat.isDirectory()) {
+            console.error(`[Static] 403 - Forbidden (Directory Access): ${fileUrl}`);
+            return res.status(403).send('Forbidden: Direct access to directories is not allowed.');
+        }
+
+        const fileSize = stat.size;
+        const range = req.headers.range;
+
+        // Comprehensive Content-Type Map
+        const mimeMap = {
+            '.mp4': 'video/mp4',
+            '.m3u8': 'application/vnd.apple.mpegurl',
+            '.ts': 'video/mp2t',
+            '.jpg': 'image/jpeg',
+            '.jpeg': 'image/jpeg',
+            '.png': 'image/png',
+            '.gif': 'image/gif',
+            '.webp': 'image/webp',
+            '.svg': 'image/svg+xml',
+            '.pdf': 'application/pdf',
+            '.mp3': 'audio/mpeg',
+            '.wav': 'audio/wav',
+            '.ogg': 'audio/ogg',
+            '.avif': 'image/avif'
+        };
+
+        const ext = path.extname(filePath).toLowerCase();
+        const contentType = mimeMap[ext] || 'application/octet-stream';
+
+        console.log(`[Static] serving: ${fileUrl} | Method: ${resolutionMethod} | Type: ${contentType} | Size: ${fileSize}`);
+
+        if (req.method === 'HEAD') {
+            res.setHeader('Content-Type', contentType);
+            res.setHeader('Content-Length', fileSize);
+            return res.status(200).end();
+        }
+
+        if (range) {
+            const parts = range.replace(/bytes=/, "").split("-");
+            const start = parseInt(parts[0], 10);
+            const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
+
+            if (start >= fileSize || end >= fileSize) {
+                res.setHeader('Content-Range', `bytes */${fileSize}`);
+                return res.status(416).send('Requested range not satisfiable');
+            }
+
+            const chunksize = (end - start) + 1;
+            const file = fs.createReadStream(filePath, { start, end });
+
+            res.writeHead(206, {
+                'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+                'Content-Length': chunksize,
+                'Content-Type': contentType,
+            });
+            file.pipe(res);
         } else {
-            console.error(`[Static] 404 - Not Found: ${fileUrl}`);
-            return res.status(404).send(`File not found: ${fileUrl}`);
+            res.writeHead(200, {
+                'Content-Length': fileSize,
+                'Content-Type': contentType,
+            });
+            fs.createReadStream(filePath).pipe(res);
         }
-    }
-
-    const stat = fs.statSync(filePath);
-    const fileSize = stat.size;
-    const range = req.headers.range;
-
-    let contentType = 'application/octet-stream';
-    const ext = path.extname(filePath).toLowerCase();
-    if (ext === '.mp4') contentType = 'video/mp4';
-    else if (ext === '.m3u8') contentType = 'application/vnd.apple.mpegurl';
-    else if (ext === '.ts') contentType = 'video/mp2t';
-    else if (['.jpg', '.jpeg'].includes(ext)) contentType = 'image/jpeg';
-    else if (ext === '.png') contentType = 'image/png';
-    else if (ext === '.webp') contentType = 'image/webp';
-
-    if (req.method === 'HEAD') {
-        res.setHeader('Content-Type', contentType);
-        res.setHeader('Content-Length', fileSize);
-        return res.status(200).end();
-    }
-
-    if (range) {
-        const parts = range.replace(/bytes=/, "").split("-");
-        const start = parseInt(parts[0], 10);
-        const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
-
-        if (start >= fileSize || end >= fileSize) {
-            res.setHeader('Content-Range', `bytes */${fileSize}`);
-            return res.status(416).send('Requested range not satisfiable');
+    } catch (error) {
+        console.error(`[Static] Critical server error serving ${req.url}:`, error);
+        if (!res.headersSent) {
+            res.status(500).send('Internal Server Error');
         }
-
-        const chunksize = (end - start) + 1;
-        const file = fs.createReadStream(filePath, { start, end });
-
-        res.writeHead(206, {
-            'Content-Range': `bytes ${start}-${end}/${fileSize}`,
-            'Content-Length': chunksize,
-            'Content-Type': contentType,
-        });
-        file.pipe(res);
-    } else {
-        res.writeHead(200, {
-            'Content-Length': fileSize,
-            'Content-Type': contentType,
-        });
-        fs.createReadStream(filePath).pipe(res);
     }
 });
 
