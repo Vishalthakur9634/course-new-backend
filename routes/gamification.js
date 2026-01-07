@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../middleware/auth');
+const { authenticate } = require('../middleware/rbac');
 
 // Dummy data for initial implementation
-router.get('/xp', auth, async (req, res) => {
+router.get('/xp', authenticate, async (req, res) => {
     try {
         res.json({
             xp: 2450,

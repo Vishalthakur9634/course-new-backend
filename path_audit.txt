@@ -1,0 +1,72 @@
+DATABASE PATH AUDIT
+===================
+
+--- REELS FOUND: 5 ---
+[Reel 0] ID: 69523e53076573e1a9852476
+  Video: /uploads/files/1766997587801-sample_1280x720.mp4
+  Thumb: undefined
+[Reel 1] ID: 69524d6c076573e1a9852625
+  Video: /uploads/files/1767001452120-sample_1280x720.mp4
+  Thumb: undefined
+[Reel 2] ID: 69525737076573e1a9853071
+  Video: /uploads/files/1767003959022-2637-161442811_small.mp4
+  Thumb: undefined
+[Reel 3] ID: 69566b19557675d1fc0e3744
+  Video: /uploads/files/1767271192869-2637-161442811_small.mp4
+  Thumb: /uploads/files/1767271192946-tilak.jpg
+[Reel 4] ID: 695e8275c56524da2262b964
+  Video: /uploads/files/1767801460164-2637-161442811_small.mp4
+  Thumb: https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=400&h=600&fit=crop
+
+--- VIDEOS FOUND: 13 ---
+[Video 0] ID: 6947bd9591010bca6632b7a3
+  Video: https://www.w3schools.com/html/mov_bbb.mp4
+  Thumb: undefined
+[Video 1] ID: 6947bd9591010bca6632b7a5
+  Video: https://www.w3schools.com/html/mov_bbb.mp4
+  Thumb: undefined
+[Video 2] ID: 6947bd9591010bca6632b7a7
+  Video: https://www.w3schools.com/html/mov_bbb.mp4
+  Thumb: undefined
+[Video 3] ID: 6947bd9591010bca6632b7b5
+  Video: https://www.w3schools.com/html/mov_bbb.mp4
+  Thumb: undefined
+[Video 4] ID: 6947bd9691010bca6632b7b7
+  Video: https://www.w3schools.com/html/mov_bbb.mp4
+  Thumb: undefined
+[Video 5] ID: 6947bd9691010bca6632b7b9
+  Video: https://www.w3schools.com/html/mov_bbb.mp4
+  Thumb: undefined
+[Video 6] ID: 6947bd9691010bca6632b7c7
+  Video: https://www.w3schools.com/html/mov_bbb.mp4
+  Thumb: undefined
+[Video 7] ID: 6947bd9691010bca6632b7c9
+  Video: https://www.w3schools.com/html/mov_bbb.mp4
+  Thumb: undefined
+[Video 8] ID: 6947bd9691010bca6632b7cb
+  Video: https://www.w3schools.com/html/mov_bbb.mp4
+  Thumb: undefined
+[Video 9] ID: 6947bd9791010bca6632b7d9
+  Video: https://www.w3schools.com/html/mov_bbb.mp4
+  Thumb: undefined
+[Video 10] ID: 6947bd9791010bca6632b7db
+  Video: https://www.w3schools.com/html/mov_bbb.mp4
+  Thumb: undefined
+[Video 11] ID: 6947bd9791010bca6632b7dd
+  Video: https://www.w3schools.com/html/mov_bbb.mp4
+  Thumb: undefined
+[Video 12] ID: 69563d96394663939a579476
+  Video: /uploads/courses/69563d96394663939a579470/69563d96394663939a579476/master.m3u8
+  Thumb: undefined
+
+--- COURSES FOUND: 5 ---
+[Course 0] ID: 6947bd9591010bca6632b7a2
+  Thumbnail: https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&auto=format&fit=crop&q=60
+[Course 1] ID: 6947bd9591010bca6632b7b4
+  Thumbnail: https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=60
+[Course 2] ID: 6947bd9691010bca6632b7c6
+  Thumbnail: https://images.unsplash.com/photo-1586717791821-3f44a563dc4c?w=800&auto=format&fit=crop&q=60
+[Course 3] ID: 6947bd9791010bca6632b7d8
+  Thumbnail: https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&auto=format&fit=crop&q=60
+[Course 4] ID: 69563d96394663939a579470
+  Thumbnail: /uploads/courses/69563d96394663939a579470/thumbnail.jpg

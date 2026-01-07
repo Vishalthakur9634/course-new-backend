@@ -61,6 +61,13 @@ app.use('/uploads', (req, res, next) => {
 
         // Attempt exact match first
         let filePath = path.join(uploadsPath, decodedUrl);
+
+        // Security: Prevent path traversal
+        if (!filePath.startsWith(uploadsPath)) {
+            console.error(`[Static] 403 - Blocked Path Traversal: ${fileUrl}`);
+            return res.status(403).send('Forbidden: Path traversal detected.');
+        }
+
         let resolutionMethod = 'EXACT';
 
         if (!fs.existsSync(filePath)) {
@@ -126,19 +133,31 @@ app.use('/uploads', (req, res, next) => {
 
             const chunksize = (end - start) + 1;
             const file = fs.createReadStream(filePath, { start, end });
+            file.on('error', (err) => {
+                console.error(`[Static] Stream Error (Range): ${err.message}`);
+                if (!res.headersSent) res.status(500).end();
+            });
 
             res.writeHead(206, {
                 'Content-Range': `bytes ${start}-${end}/${fileSize}`,
                 'Content-Length': chunksize,
                 'Content-Type': contentType,
+                'Cache-Control': 'public, max-age=31536000'
             });
             file.pipe(res);
         } else {
+            const file = fs.createReadStream(filePath);
+            file.on('error', (err) => {
+                console.error(`[Static] Stream Error (Full): ${err.message}`);
+                if (!res.headersSent) res.status(500).end();
+            });
+
             res.writeHead(200, {
                 'Content-Length': fileSize,
                 'Content-Type': contentType,
+                'Cache-Control': 'public, max-age=31536000'
             });
-            fs.createReadStream(filePath).pipe(res);
+            file.pipe(res);
         }
     } catch (error) {
         console.error(`[Static] Critical server error serving ${req.url}:`, error);
@@ -227,7 +246,6 @@ app.get('/api/health', (req, res) => {
 });
 
 // Global Error Handler & Logger
-const fs = require('fs');
 app.use((err, req, res, next) => {
     const errorLog = `[${new Date().toISOString()}] ${req.method} ${req.url} - Error: ${err.message}\nStack: ${err.stack}\n\n`;
     fs.appendFileSync('debug_log.txt', errorLog);
@@ -280,3 +298,11 @@ server.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`);
 });
 
+server.on('error', (error) => {
+    if (error.code === 'EADDRINUSE') {
+        console.error(`❌ PORT ${PORT} is already in use. Please kill the existing process and try again.`);
+    } else {
+        console.error('❌ Server error:', error);
+    }
+    process.exit(1);
+});
