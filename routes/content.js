@@ -284,10 +284,11 @@ router.post('/tutor/chat', auth, async (req, res) => {
         }
 
         // Add AI message
-        chat.messages.push({ role: 'ai', text: aiText });
+        const aiMessage = { role: 'ai', text: aiText, timestamp: new Date() };
+        chat.messages.push(aiMessage);
         await chat.save();
 
-        res.json({ role: 'ai', text: aiText, timestamp: new Date() });
+        res.json({ aiMessage });
 
     } catch (err) {
         res.status(500).json({ message: err.message });

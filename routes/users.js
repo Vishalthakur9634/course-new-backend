@@ -9,6 +9,34 @@ const fs = require('fs');
 const { authenticate } = require('../middleware/rbac');
 const bcrypt = require('bcryptjs');
 
+// Get user directory for networking
+router.get('/directory', async (req, res) => {
+    try {
+        const { search, role } = req.query;
+        let query = {};
+
+        if (role && role !== 'all') {
+            query.role = role;
+        }
+
+        if (search) {
+            query.$or = [
+                { name: { $regex: search, $options: 'i' } },
+                { bio: { $regex: search, $options: 'i' } }
+            ];
+        }
+
+        const users = await User.find(query)
+            .select('name avatar bio role createdAt followers following')
+            .limit(20)
+            .lean();
+
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching directory', error: error.message });
+    }
+});
+
 // Multer for Profile Photos
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -22,17 +50,30 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// Get all instructors
-router.get('/instructors', async (req, res) => {
+// Get mentors (instructors)
+router.get('/instructors/mentors', async (req, res) => {
     try {
-        const instructors = await User.find({
+        const { search } = req.query;
+        let query = {
             role: 'instructor',
             isInstructorApproved: true
-        }).select('name email avatar instructorProfile');
+        };
 
-        res.json(instructors);
+        if (search) {
+            query.$or = [
+                { name: { $regex: search, $options: 'i' } },
+                { 'instructorProfile.headline': { $regex: search, $options: 'i' } },
+                { 'instructorProfile.expertise': { $regex: search, $options: 'i' } }
+            ];
+        }
+
+        const mentors = await User.find(query)
+            .select('name avatar bio instructorProfile')
+            .lean();
+
+        res.json(mentors);
     } catch (error) {
-        res.status(500).json({ message: 'Error fetching instructors', error: error.message });
+        res.status(500).json({ message: 'Error fetching mentors', error: error.message });
     }
 });
 

@@ -204,6 +204,12 @@ const articleRoutes = require('./routes/articles');
 const referralRoutes = require('./routes/referrals');
 const uploadRoutes = require('./routes/upload');
 const practiceRoutes = require('./routes/practice');
+const learningPathRoutes = require('./routes/learningPaths');
+const jobRoutes = require('./routes/jobs');
+const projectRoutes = require('./routes/projects');
+const licenseRoutes = require('./routes/licenses');
+const whiteLabelRoutes = require('./routes/whitelabel');
+const mobileRoutes = require('./routes/mobile');
 
 // API Routes
 app.use('/api/auth', authRoutes);
@@ -236,9 +242,19 @@ app.use('/api/practice', practiceRoutes);
 app.use('/api/reels', require('./routes/reels'));
 app.use('/api/gamification', require('./routes/gamification'));
 app.use('/api/events', require('./routes/events'));
+app.use('/api/mentorship', require('./routes/mentorship'));
+app.use('/api/learning-paths', learningPathRoutes);
+app.use('/api/jobs', jobRoutes);
+app.use('/api/projects', projectRoutes);
+app.use('/api/licenses', licenseRoutes);
+app.use('/api/whitelabel', whiteLabelRoutes);
+app.use('/api/mobile', mobileRoutes);
+app.use('/api/playground', require('./routes/playground'));
 // [NEW] Reels routes
-app.use('/api/assignments', require('./routes/assignments')); // [NEW] Assignment routes
-app.use('/api/content', require('./routes/content')); // [NEW] Content routes (Sectors, Skills, Vault, AI)
+app.use('/api/assignments', require('./routes/assignments'));
+app.use('/api/content', require('./routes/content'));
+app.use('/api/hiring', require('./routes/hiring')); // [NEW] Hiring Channel routes
+app.use('/api/ai-interview', require('./routes/aiInterview')); // [NEW] AI Interview routes
 
 // Health check
 app.get('/api/health', (req, res) => {

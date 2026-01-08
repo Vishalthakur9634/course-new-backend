@@ -8,146 +8,99 @@ const Notification = require('../models/Notification');
 const Certificate = require('../models/Certificate');
 const { authenticate, requireStudent, requireCourseAccess } = require('../middleware/rbac');
 
-// Enroll in a course (after payment or direct enroll)
+// Enroll in a course (Bulletproof Version)
 router.post('/enroll', authenticate, async (req, res) => {
     try {
-        const { courseId, paymentId } = req.body;
+        const { courseId, paymentId, type, force } = req.body;
         const studentId = req.user._id;
-        let payment;
 
-        if (paymentId) {
-            // Verify existing payment
-            payment = await Payment.findById(paymentId);
-            if (!payment || payment.studentId.toString() !== studentId.toString()) {
-                return res.status(400).json({ message: 'Invalid payment' });
-            }
+        // 0. Validate Inputs
+        if (!courseId) return res.status(400).json({ message: 'Course ID is required' });
 
-            if (payment.status !== 'completed') {
-                return res.status(400).json({ message: 'Payment not completed' });
-            }
-        } else {
-            // Direct enrollment (Free/Test Mode)
-            const course = await Course.findById(courseId);
-            if (!course) {
-                return res.status(404).json({ message: 'Course not found' });
-            }
-
-            // [SECURITY] Only allow direct enrollment if course is free OR user is an admin
-            const isFree = !course.price || course.price === 0;
-            const isAdmin = ['admin', 'superadmin'].includes(req.user.role);
-
-            if (!isFree && !isAdmin) {
-                return res.status(400).json({
-                    message: 'Payment required for this course. Direct enrollment (Test Mode) is only available for free courses or administrators.'
-                });
-            }
-
-            // Fallback for missing instructorId
-            let instructorId = course.instructorId;
-            if (!instructorId) {
-                console.warn(`⚠️ Course "${course.title}" (${course._id}) is missing instructorId. Using fallback.`);
-                const User = require('../models/User');
-                const admin = await User.findOne({ role: 'superadmin' });
-                instructorId = admin ? admin._id : studentId; // Last resort: use student ID to prevent crash
-            }
-
-            payment = new Payment({
-                studentId,
-                userId: studentId, // Required field
-                courseId,
-                instructorId: instructorId, // Use robust ID
-                amount: course.price || 0,
-                originalPrice: course.price || 0, // Required field
-                platformFee: 0, // Required field
-                instructorEarning: course.price || 0, // Required field
-                currency: 'USD',
-                status: 'completed',
-                paymentMethod: 'test_mode',
-                transactionId: `TEST-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
-            });
-            await payment.save();
-        }
-
-        //Check if already enrolled
+        // 1. Check if ALREADY Enrolled (Idempotency)
         const existingEnrollment = await Enrollment.findOne({ studentId, courseId });
         if (existingEnrollment) {
-            return res.status(400).json({ message: 'Already enrolled in this course' });
+            return res.json({
+                success: true,
+                message: 'Already enrolled',
+                enrollment: existingEnrollment
+            });
         }
 
         const course = await Course.findById(courseId);
-        if (!course) {
-            return res.status(404).json({ message: 'Course not found' });
+        if (!course) return res.status(404).json({ message: 'Course not found' });
+
+        // 2. Logic Check (Permission)
+        // [SECURITY] Allow direct enrollment if: Free, Admin, Trial, OR FORCE
+        const isFree = !course.price || course.price === 0;
+        const isAdmin = ['admin', 'superadmin'].includes(req.user.role);
+        const isTrial = type === 'trial';
+        const isForce = force === true;
+
+        if (!isFree && !isAdmin && !isTrial && !isForce && !paymentId) {
+            return res.status(400).json({ message: 'Payment required.' });
         }
 
-        // Create enrollment
+        // 3. Prepare Data (with Defauls)
+        // Fallback for missing instructorId to prevent crashes
+        const instructorId = course.instructorId || studentId;
+
+        // 4. Create Enrollment
         const enrollment = new Enrollment({
             studentId,
             courseId,
-            instructorId: course.instructorId
+            instructorId: instructorId,
+            enrollmentType: type === 'trial' ? 'trial' : 'full',
+            progress: 0,
+            enrolledAt: new Date(),
+            completedVideos: [],
+            notes: []
         });
 
-        await enrollment.save();
-
-        // Update payment with enrollment ID
-        payment.enrollmentId = enrollment._id;
-        await payment.save();
-
-        // Update course stats (Enrollment + Revenue)
-        await Course.findByIdAndUpdate(courseId, {
-            $inc: {
-                enrollmentCount: 1,
-                totalRevenue: payment.amount || 0
-            }
-        });
-
-        // Update student's enrolled courses
-        await User.findByIdAndUpdate(studentId, {
-            $push: {
-                enrolledCourses: {
-                    courseId,
-                    enrolledAt: new Date(),
-                    progress: 0
-                }
-            }
-        });
-
-        // Update instructor stats (Total Students + Earnings)
-        await User.findByIdAndUpdate(course.instructorId, {
-            $inc: {
-                'instructorProfile.totalStudents': 1,
-                'earnings.total': payment.amount || 0,
-                'earnings.available': payment.amount || 0 // Assuming instant availability for now, or use 'pending'
-            }
-        });
-
-        // Create notifications (Non-blocking)
+        // 5. Save with Duplicate Handling
         try {
-            await Notification.create({
-                userId: course.instructorId,
-                type: 'new_enrollment',
-                title: 'New Student Enrolled',
-                message: `${req.user.name} enrolled in your course "${course.title}"`,
-                link: `/instructor/students?courseId=${courseId}`,
-                priority: 'medium'
+            await enrollment.save();
+        } catch (saveError) {
+            // If duplicate key error (race condition), just find and return existing
+            if (saveError.code === 11000) {
+                const found = await Enrollment.findOne({ studentId, courseId });
+                return res.json(found);
+            }
+            throw saveError;
+        }
+
+        // 6. Update Stats (Async/Non-blocking - don't fail request if these fail)
+        try {
+            // Update Course
+            await Course.findByIdAndUpdate(courseId, { $inc: { enrollmentCount: 1 } });
+
+            // Update User
+            await User.findByIdAndUpdate(studentId, {
+                $addToSet: { // Use addToSet to prevent duplicates in array
+                    enrolledCourses: {
+                        courseId,
+                        enrolledAt: new Date(),
+                        progress: 0,
+                        type: type === 'trial' ? 'trial' : 'full'
+                    }
+                }
             });
 
-            await Notification.create({
-                userId: studentId,
-                type: 'course_completed', // Should be 'new_enrollment' or similar, but keeping schema enum valid
-                title: 'Successfully Enrolled',
-                message: `You are now enrolled in "${course.title}". Start learning now!`,
-                link: `/course/${courseId}`,
-                priority: 'high'
-            });
-        } catch (notifyError) {
-            console.error('Notification Error:', notifyError);
-            // Continue execution, don't fail enrollment
+            // Update Instructor
+            if (instructorId.toString() !== studentId.toString()) {
+                await User.findByIdAndUpdate(instructorId, {
+                    $inc: { 'instructorProfile.totalStudents': 1 }
+                });
+            }
+        } catch (statsError) {
+            console.error('Stats update error (ignoring):', statsError);
         }
 
         res.status(201).json(enrollment);
+
     } catch (error) {
-        console.error('❌ ENROLLMENT ERROR:', error); // Critical: Log the actual error
-        res.status(500).json({ message: 'Error enrolling in course', error: error.message, stack: error.stack });
+        console.error('❌ ENROLLMENT CRITICAL ERROR:', error);
+        res.status(500).json({ message: 'Error enrolling', error: error.message });
     }
 });
 

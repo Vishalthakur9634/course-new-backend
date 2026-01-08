@@ -1,0 +1,31 @@
+ValidationError: SkillTree validation failed: id: Path `id` is required.
+    at Document.invalidate (C:\Users\Vishal\OneDrive\Desktop\new-course-player\server\node_modules\mongoose\lib\document.js:3365:32)
+    at validatePath (C:\Users\Vishal\OneDrive\Desktop\new-course-player\server\node_modules\mongoose\lib\document.js:3140:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Promise.all (index 0)
+    at async model.$__validate (C:\Users\Vishal\OneDrive\Desktop\new-course-player\server\node_modules\mongoose\lib\document.js:3081:3)
+    at async model.validate (C:\Users\Vishal\OneDrive\Desktop\new-course-player\server\node_modules\mongoose\lib\document.js:2663:5) {
+  errors: {
+    id: ValidatorError: Path `id` is required.
+        at SchemaString.doValidate (C:\Users\Vishal\OneDrive\Desktop\new-course-player\server\node_modules\mongoose\lib\schemaType.js:1425:13)
+        at validatePath (C:\Users\Vishal\OneDrive\Desktop\new-course-player\server\node_modules\mongoose\lib\document.js:3132:24)
+        at model.$__validate (C:\Users\Vishal\OneDrive\Desktop\new-course-player\server\node_modules\mongoose\lib\document.js:3078:21)
+        at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+        at async model.validate (C:\Users\Vishal\OneDrive\Desktop\new-course-player\server\node_modules\mongoose\lib\document.js:2663:5) {
+      properties: {
+        validator: [Function (anonymous)],
+        message: 'Path `id` is required.',
+        type: 'required',
+        path: 'id',
+        fullPath: undefined,
+        value: undefined
+      },
+      kind: 'required',
+      path: 'id',
+      value: undefined,
+      reason: undefined,
+      [Symbol(mongoose#validatorError)]: true
+    }
+  },
+  _message: 'SkillTree validation failed'
+}

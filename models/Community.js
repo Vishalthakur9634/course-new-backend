@@ -11,7 +11,7 @@ const communitySchema = new mongoose.Schema({
     },
     category: {
         type: String,
-        enum: ['announcements', 'general', 'help', 'showcase', 'offtopic', 'custom'],
+        enum: ['announcements', 'general', 'help', 'showcase', 'offtopic', 'custom', 'study-group', 'career'],
         default: 'general'
     },
     creatorId: {

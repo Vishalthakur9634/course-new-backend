@@ -16,6 +16,11 @@ const enrollmentSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
+    enrollmentType: {
+        type: String,
+        enum: ['full', 'trial'],
+        default: 'full'
+    },
     enrolledAt: {
         type: Date,
         default: Date.now

@@ -155,6 +155,21 @@ const requireCourseAccess = async (req, res, next) => {
     }
 };
 
+// Optional authentication (attaches user if token valid, else continues as guest)
+const optionalAuthenticate = async (req, res, next) => {
+    try {
+        const token = req.headers.authorization?.split(' ')[1];
+        if (token) {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secret');
+            req.user = await User.findById(decoded.id).select('-password');
+        }
+        next();
+    } catch (error) {
+        // Continue as guest if token invalid
+        next();
+    }
+};
+
 module.exports = {
     authenticate,
     requireStudent,
@@ -162,5 +177,6 @@ module.exports = {
     requireSuperAdmin,
     requireAnyRole,
     requireCourseOwnership,
-    requireCourseAccess
+    requireCourseAccess,
+    optionalAuthenticate
 };

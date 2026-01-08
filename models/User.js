@@ -76,6 +76,12 @@ const userSchema = new mongoose.Schema({
     enrolledCourses: [{
         courseId: { type: mongoose.Schema.Types.ObjectId, ref: 'Course' },
         enrolledAt: { type: Date, default: Date.now },
+        progress: { type: Number, default: 0 },
+        type: { type: String, enum: ['full', 'trial'], default: 'full' }
+    }],
+    enrolledLearningPaths: [{
+        pathId: { type: mongoose.Schema.Types.ObjectId, ref: 'LearningPath' },
+        enrolledAt: { type: Date, default: Date.now },
         progress: { type: Number, default: 0 }
     }],
     purchasedCourses: [{
@@ -182,7 +188,16 @@ const userSchema = new mongoose.Schema({
             icon: { type: String }
         }],
         streak: { type: Number, default: 0 },
-        lastActivity: { type: Date }
+        lastActivity: { type: Date },
+        completedMissions: [{
+            missionId: { type: mongoose.Schema.Types.ObjectId, ref: 'Mission' },
+            completedAt: { type: Date, default: Date.now }
+        }],
+        redeemedRewards: [{
+            rewardId: { type: String },
+            redeemedAt: { type: Date, default: Date.now },
+            costXp: { type: Number }
+        }]
     }
 }, { timestamps: true });
 
