@@ -5,6 +5,45 @@ const path = require('path');
 const fs = require('fs');
 require('dotenv').config();
 
+const PORT = process.env.PORT || 5001;
+
+// [CORE FIX] Clear port if it's already in use (Development Only)
+if (process.env.NODE_ENV !== 'production') {
+    const { execSync } = require('child_process');
+    try {
+        if (process.platform === 'win32') {
+            const system32 = 'C:\\Windows\\System32';
+            const netstatPath = `${system32}\\netstat.exe`;
+            const taskkillPath = `${system32}\\taskkill.exe`;
+
+            const output = execSync(`${netstatPath} -ano`).toString();
+            const lines = output.split('\n');
+            const pids = new Set();
+
+            for (const line of lines) {
+                if (line.includes(`:${PORT}`) && line.includes('LISTENING')) {
+                    const parts = line.trim().split(/\s+/);
+                    const pid = parts[parts.length - 1];
+                    if (pid && !isNaN(pid) && pid !== '0') pids.add(pid);
+                }
+            }
+
+            pids.forEach(pid => {
+                console.log(`⚠️  [Port Fix] Found process ${pid} on port ${PORT}. Clearing...`);
+                try { execSync(`${taskkillPath} /F /PID ${pid}`, { stdio: 'ignore' }); } catch (e) { }
+            });
+        } else {
+            execSync(`lsof -t -i:${PORT} | xargs kill -9`, { stdio: 'ignore' });
+        }
+    } catch (e) {
+        // Silently continue
+    }
+}
+
+
+
+
+
 const app = express();
 
 // Middleware
@@ -269,7 +308,7 @@ app.use((err, req, res, next) => {
     res.status(500).json({ message: 'Internal Server Error', error: err.message });
 });
 
-const PORT = process.env.PORT || 5001;
+
 const server = require('http').createServer(app);
 const io = require('socket.io')(server, {
     cors: {
@@ -309,6 +348,8 @@ const uploadDirs = ['uploads', 'uploads/profiles', 'uploads/files', 'uploads/cou
 uploadDirs.forEach(dir => {
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 });
+
+
 
 server.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`);

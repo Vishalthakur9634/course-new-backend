@@ -4,3 +4,14 @@ Total Users: 0
 Target user not found by ID. Searching by role instructor...
 No target user or instructor found.
 Disconnected.
+[CORE] Checking port 5001 at 2026-01-09T11:08:38.307Z
+[CORE] Port cleanup error: Command failed: powershell -Command "Get-NetTCPConnection -LocalPort 5001 -ErrorAction SilentlyContinue | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force }"
+[CORE] Checking port 5001 at 2026-01-09T11:09:07.293Z
+[CORE] Port cleanup error: spawnSync powershell.exe ENOENT
+[CORE] Checking port 5001 at 2026-01-09T11:09:37.607Z
+[CORE] Port cleanup error: Command failed: netstat -ano
+'netstat' is not recognized as an internal or external command,
+operable program or batch file.
+
+[CORE] Checking port 5001 at 2026-01-09T11:10:15.916Z
+[CORE] Found PID 15996 on port 5001. Killing...
