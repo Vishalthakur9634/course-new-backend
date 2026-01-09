@@ -5,6 +5,27 @@ const Course = require('../models/Course');
 const { authenticate, requireInstructor } = require('../middleware/rbac');
 const Submission = require('../models/Submission');
 
+// Get all practice problems (Global list for creating user or admin)
+router.get('/', authenticate, async (req, res) => {
+    try {
+        const query = {};
+        if (req.user.role === 'instructor') {
+            query.createdBy = req.user._id;
+        }
+        // Students typically shouldn't use this global route, they use /course/:id, but if they do, show nothing or public ones?
+        // For now, let's keep it restricted or filtered.
+        if (req.user.role === 'student') return res.status(403).json({ message: 'Use course specific routes' });
+
+        const problems = await Practice.find(query)
+            .sort({ createdAt: -1 })
+            .populate('createdBy', 'name')
+            .populate('courseId', 'title');
+        res.json(problems);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching practice problems', error: error.message });
+    }
+});
+
 // Get all practice problems for a course
 router.get('/course/:courseId', authenticate, async (req, res) => {
     try {

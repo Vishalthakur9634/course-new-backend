@@ -10,6 +10,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const { processVideo } = require('../utils/videoProcessor');
+const Resource = require('../models/Resource');
 const mongoose = require('mongoose');
 
 // Multer setup
@@ -529,6 +530,67 @@ router.get('/analytics/:courseId', authenticate, requireInstructor, requireCours
         });
     } catch (error) {
         res.status(500).json({ message: 'Error fetching analytics', error: error.message });
+    }
+});
+
+// --- Resource Management ---
+
+// Get all resources for instructor
+router.get('/resources', authenticate, requireInstructor, async (req, res) => {
+    try {
+        const resources = await Resource.find({ instructorId: req.user._id })
+            .sort({ createdAt: -1 });
+        res.json({ resources });
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching resources', error: error.message });
+    }
+});
+
+// Add new resource (metadata only, file uploaded via /api/upload)
+router.post('/resources', authenticate, requireInstructor, async (req, res) => {
+    try {
+        const { name, url, type, size, courseId, tags } = req.body;
+
+        const resource = new Resource({
+            name,
+            url, // Currently relative path from /api/upload
+            type: type || 'file',
+            size: size || '0 KB',
+            instructorId: req.user._id,
+            courseId: courseId || null,
+            tags: tags || []
+        });
+
+        await resource.save();
+        res.status(201).json(resource);
+    } catch (error) {
+        res.status(500).json({ message: 'Error saving resource', error: error.message });
+    }
+});
+
+// Delete resource
+router.delete('/resources/:id', authenticate, requireInstructor, async (req, res) => {
+    try {
+        const resource = await Resource.findOneAndDelete({
+            _id: req.params.id,
+            instructorId: req.user._id
+        });
+
+        if (!resource) return res.status(404).json({ message: 'Resource not found' });
+
+        // Optional: Delete physical file if possible. 
+        // Note: URL might be /uploads/files/xyz. Using path.join/helpers to resolve.
+        // For now, let's keep it safe and just delete the metadata or try best effort.
+        try {
+            if (resource.url.startsWith('/uploads/')) {
+                const filePath = path.join(__dirname, '..', resource.url);
+                if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+            }
+        } catch (e) { console.error("Error deleting file:", e); }
+
+        res.json({ message: 'Resource deleted' });
+    } catch (error) {
+        res.status(500).json({ message: 'Error deleting resource', error: error.message });
     }
 });
 
